@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "name": "momo",
+    "description": "steamed dumplings served with chutney",
+    "price": "Rs. 200",
+    "image": "images/momo.png",
+    "preparationTime": 10000
+  },
+  {
+    "id": 2,
+    "name": "tofu",
+    "description": "fermented soybean served with spices and dipping sauce",
+    "price": "Rs. 150",
+    "image": "images/tofu.png",
+    "preparationTime": 4000
+  },
+  {
+    "id": 3,
+    "name": "laphing",
+    "description": "soft rolls of cold yellow noodles served with waiwai",
+    "price": "Rs. 70",
+    "image": "images/laphing.png",
+    "preparationTime": 3000
+  },
+  {
+    "id": 4,
+    "name": "thukpa",
+    "description": "hot noodle soup which warms your soul",
+    "price": "Rs. 250",
+    "image": "images/thukpa.png",
+    "preparationTime": 7000
+  },
+  {
+    "id": 5,
+    "name": "selroti",
+    "description": "traditional sweet roti made with rice flour",
+    "price": "Rs. 30",
+    "image": "images/selroti.png",
+    "preparationTime": 5000
+  }
+]
