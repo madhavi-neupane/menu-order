@@ -1,51 +1,66 @@
-async function fetchMenu() {
-  const menuContainer = document.getElementById('menu-items')
+document.addEventListener('DOMContentLoaded', () => {
+  fetchMenu()
+})
 
-  try {
-    const response = await fetch('menu.json')
-    if (!response.ok) {
-      throw new Error(`Error: ${response.statusText}`)
-    }
-    const menuItems = await response.json()
+function fetchMenu() {
+  const menuContainer = document.getElementById(`menu-items`)
 
-    menuContainer.innerHTML = ''
+  fetch(`menu.json`)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`Error`)
+      }
+      return response.json()
+    })
 
-    menuItems.forEach((item) => {
-      const menuItem = document.createElement('div')
-      menuItem.classList.add('menu-item')
-      menuItem.innerHTML = `
+    .then((menuItems) => {
+      menuContainer.innerHTML = ''
+
+      menuItems.forEach((item) => {
+        const menuItem = document.createElement('div')
+        menuItem.classList.add('menu-item')
+        menuItem.innerHTML = `
             <img src="${item.image}" alt="${item.name}" class="menu-item-img">
             <h4>${item.name}</h4>
             <p>${item.description}</p>
             <p><b>${item.price}</b></p>
             <button onclick ="placeOrder(${item.id})">Order</button>
         `
-      menuContainer.appendChild(menuItem)
+
+        menuContainer.appendChild(menuItem)
+      })
     })
-  } catch (error) {
-    console.log(error)
-  }
+
+    .catch((error) => console.error(error))
 }
 
-document.addEventListener('DOMContentLoaded', fetchMenu)
+function placeOrder(itemId) {
+  fetch('menu.json')
+    .then((response) => response.json())
+    .then((menuItems) => {
+      const orderItem = menuItems.find((item) => item.id == itemId)
 
-//
-//
-async function placeOrder(itemId) {
-  const response = await fetch('menu.json')
-  const menuItems = await response.json()
-  const orderItem = menuItems.find((item) => item.id == itemId)
+      if (!orderItem) {
+        alert('Invalid item')
+        return
+      }
 
-  const orderList = document.getElementById('order-list')
-  const orderItemDiv = document.createElement('div')
+      const orderList = document.getElementById('order-list')
+      const orderItemDiv = document.createElement('div')
 
-  orderItemDiv.textContent = `Order has been placed for ${
-    orderItem.name
-  }. Please wait for ${orderItem.preparationTime / 1000} seconds.`
+      orderItemDiv.textContent = `Order has been placed for ${
+        orderItem.name
+      }. Please wait for ${orderItem.preparationTime / 1000} seconds.`
 
-  orderList.appendChild(orderItemDiv)
+      orderList.appendChild(orderItemDiv)
 
-  await new Promise((resolve) => setTimeout(resolve, orderItem.preparationTime))
+      return new Promise((resolve) =>
+        setTimeout(resolve, orderItem.preparationTime)
+      ).then(() => {
+        orderItemDiv.textContent =
+          orderItemDiv.textContent = `${orderItem.name} is ready.`
+      })
+    })
 
-  orderItemDiv.textContent = `${orderItem.name} is ready.`
+    .catch((error) => console.error(error))
 }
